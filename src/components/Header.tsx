@@ -1,6 +1,16 @@
-import useCart from "../hooks/useCart";
+import type { CartItem, Guitar } from "../types";
 
-function Header({ cart, removeFromCart, increaseQuantity, decreaseQuantity, emptyCart, isEmpty, cartTotal }) {
+type HeaderProps = {
+    cart: CartItem[];
+    removeFromCart: (id: Guitar['id']) => void;
+    increaseQuantity: (id: Guitar['id']) => void;
+    decreaseQuantity: (id: Guitar['id']) => void;
+    emptyCart: () => void;
+    isEmpty: boolean;
+    cartTotal: number;
+}
+
+function Header({ cart, removeFromCart, increaseQuantity, decreaseQuantity, emptyCart, isEmpty, cartTotal }: HeaderProps) {
 
     return (
         <header className="py-5 header">
@@ -17,8 +27,8 @@ function Header({ cart, removeFromCart, increaseQuantity, decreaseQuantity, empt
                             <div id="cart" className="bg-white p-3">
                                 {isEmpty ? (
                                     <>
-                                    <p className="text-center">Cart is empty</p>
-                                    <p className="text-center">Please add some items</p>
+                                        <p className="text-center">Cart is empty</p>
+                                        <p className="text-center">Please add some items</p>
                                     </>
                                 ) : (<><table className="w-100 table">
                                     <thead>

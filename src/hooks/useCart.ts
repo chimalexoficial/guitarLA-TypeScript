@@ -1,10 +1,11 @@
 import { useState, useEffect, useMemo } from 'react';
 import { db } from '../data/db.js';
+import type { Guitar, CartItem } from '../types/index.js';
 
 
 const useCart = () => {
 
-    const initialCart = () => {
+    const initialCart = (): CartItem[] => {
         const localStorageCart = localStorage.getItem('cart');
         if (localStorageCart != null) {
             return JSON.parse(localStorageCart);
@@ -22,7 +23,7 @@ const useCart = () => {
         localStorage.setItem('cart', JSON.stringify(cart));
     }, [cart])
 
-    function addToCart(item) {
+    function addToCart(item: Guitar) {
         const itemExists = cart.findIndex((guitar) => item.id === guitar.id);
         console.log(itemExists);
 
@@ -33,19 +34,19 @@ const useCart = () => {
             updatedCart[itemExists].quantity++;
             setCart(updatedCart);
         } else { // add to cart
+            const newItem: CartItem = { ...item, quantity: 1 };
             console.log('Adding...');
-            item.quantity = 1;
-            setCart((prevState) => [...prevState, item]);
+            setCart([...cart, newItem]);
         }
     }
 
-    function removeFromCart(id) {
+    function removeFromCart(id: Guitar['id']) {
         console.log('Removing...');
         console.log(id);
         setCart(cart.filter(item => item.id !== id));
     }
 
-    function increaseQuantity(id) {
+    function increaseQuantity(id: Guitar['id']) {
         const updatedCart = cart.map((item) => {
             if (item.id === id && item.quantity < MAX_ITEMS) {
                 return {
@@ -58,7 +59,7 @@ const useCart = () => {
         setCart(updatedCart);
     }
 
-    function decreaseQuantity(id) {
+    function decreaseQuantity(id: Guitar['id']) {
         const updatedCart = cart.map((item) => {
             if (item.id === id && item.quantity > MIN_ITEMS) {
                 return {
