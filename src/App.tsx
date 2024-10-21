@@ -4,6 +4,7 @@ import Guitar from './components/Guitar';
 import useCart from './hooks/useCart';
 
 function App() {
+    console.log('From App');
 
     const {
         data,
